@@ -1,4 +1,5 @@
 import XCTest
+import Combine
 @testable import CTKitSwift
 
 final class CTKitSwiftTests: XCTestCase {
@@ -7,6 +8,17 @@ final class CTKitSwiftTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
         XCTAssertEqual(CTKitSwift().text, "Hello, World!")
+    }
+
+    func testGetToken() {
+        var bag = Set<AnyCancellable>()
+        let exp = expectation(description: "token")
+        API.token.execute().sink(receiveCompletion: { _ in },
+                                 receiveValue: { (data, response) in
+                                    exp.fulfill()
+            }).store(in: &bag)
+        let result = XCTWaiter().wait(for: [exp], timeout: 5)
+        XCTAssertEqual(result, .completed)
     }
 
     static var allTests = [

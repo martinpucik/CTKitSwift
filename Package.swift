@@ -5,10 +5,16 @@ import PackageDescription
 
 let package = Package(
     name: "CTKitSwift",
+    platforms: [
+        .iOS(.v13),
+        .tvOS(.v13)
+    ],
     products: [
         .library(name: "CTKitSwift", targets: ["CTKitSwift"]),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(url: "https://github.com/drmohundro/swxmlhash", .upToNextMajor(from: "5.0.0"))
+    ],
     targets: [
         .target(name: "CTKitSwift", dependencies: []),
         .testTarget(name: "CTKitSwiftTests", dependencies: ["CTKitSwift"]),
