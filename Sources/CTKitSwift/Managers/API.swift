@@ -8,9 +8,10 @@
 import Foundation
 import Combine
 
-enum API {
+public enum API {
 
     case token
+    case programmelist
 
     // MARK: - Private properties
 
@@ -26,12 +27,13 @@ enum API {
     private var path: String {
         switch self {
             case .token: return "/services/ivysilani/xml/token/"
+            case .programmelist: return "/services/ivysilani/xml/programmelist/"
         }
     }
 
     private var method: String {
         switch self {
-            case .token: return "POST"
+            case .token, .programmelist: return "POST"
         }
     }
 
@@ -55,7 +57,7 @@ enum API {
 
     // MARK: - Public methods
 
-    func execute() -> URLSession.DataTaskPublisher {
+    public func execute() -> URLSession.DataTaskPublisher {
         return URLSession.shared.dataTaskPublisher(for: request)
     }
 }

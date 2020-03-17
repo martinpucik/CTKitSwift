@@ -15,6 +15,7 @@ final class CTKitSwiftTests: XCTestCase {
         let exp = expectation(description: "token")
         API.token.execute().sink(receiveCompletion: { _ in },
                                  receiveValue: { (data, response) in
+                                    print(String(data: data, encoding: .utf8))
                                     exp.fulfill()
             }).store(in: &bag)
         let result = XCTWaiter().wait(for: [exp], timeout: 5)
