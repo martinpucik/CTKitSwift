@@ -1,4 +1,4 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.1
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -13,10 +13,13 @@ let package = Package(
         .library(name: "CTKitSwift", targets: ["CTKitSwift"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/drmohundro/swxmlhash", .upToNextMajor(from: "5.0.0"))
+        .package(url: "https://github.com/drmohundro/swxmlhash", .branch("master"))
     ],
     targets: [
-        .target(name: "CTKitSwift", dependencies: []),
+        .target(name: "CTKitSwift", dependencies: ["SWXMLHash"]),
         .testTarget(name: "CTKitSwiftTests", dependencies: ["CTKitSwift"]),
+    ],
+    swiftLanguageVersions: [
+        .v5
     ]
 )

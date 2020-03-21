@@ -7,11 +7,12 @@
 
 import Foundation
 import Combine
+import SWXMLHash
 
-public enum API {
+enum API {
 
     case token
-    case programmelist
+    case programmelist(token: String)
 
     // MARK: - Private properties
 
@@ -39,7 +40,8 @@ public enum API {
 
     private var body: Data? {
         switch self {
-            case .token: return "user=iDevicesMotion".data(using: .utf8)
+        case .token: return ["user": "iDevicesMotion"].percentEncoded
+        case .programmelist(let token): return ["token": token, "imageType": "1280", "current": "1"].percentEncoded
         }
     }
 
@@ -57,7 +59,14 @@ public enum API {
 
     // MARK: - Public methods
 
-    public func execute() -> URLSession.DataTaskPublisher {
+    public func execute<T: XMLDecodable>() -> AnyPublisher<T, Error> {
         return URLSession.shared.dataTaskPublisher(for: request)
+            .tryCompactMap { (data, _) -> T? in
+                let xml = SWXMLHash.parse(data)
+                if xml["errors"]["error"].element?.text == "wrong token" {
+                    throw 
+                }
+                return try T(xmlObject: xml)
+            }.eraseToAnyPublisher()
     }
 }

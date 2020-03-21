@@ -3,26 +3,28 @@ import Combine
 @testable import CTKitSwift
 
 final class CTKitSwiftTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(CTKitSwift().text, "Hello, World!")
-    }
-
     func testGetToken() {
         var bag = Set<AnyCancellable>()
         let exp = expectation(description: "token")
-        API.token.execute().sink(receiveCompletion: { _ in },
-                                 receiveValue: { (data, response) in
-                                    print(String(data: data, encoding: .utf8))
-                                    exp.fulfill()
-            }).store(in: &bag)
+        let req: AnyPublisher<CTKToken, Error> = API.token.execute()
+        req.sink(receiveCompletion: { _ in }, receiveValue: { (token) in
+            exp.fulfill()
+        }).store(in: &bag)
+
         let result = XCTWaiter().wait(for: [exp], timeout: 5)
         XCTAssertEqual(result, .completed)
     }
 
-    static var allTests = [
-        ("testExample", testExample),
-    ]
+    func testGetProgrammes() {
+        var bag = Set<AnyCancellable>()
+        let exp = expectation(description: "programmes")
+        let req: AnyPublisher<[CTKProgramme], Error> = CTKit.programmes()
+        req.sink(receiveCompletion: { _ in }, receiveValue: { (prog) in
+            print(prog)
+            exp.fulfill()
+        }).store(in: &bag)
+
+        let result = XCTWaiter().wait(for: [exp], timeout: 5)
+        XCTAssertEqual(result, .completed)
+    }
 }
