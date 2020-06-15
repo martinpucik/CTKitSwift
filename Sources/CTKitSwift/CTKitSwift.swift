@@ -21,7 +21,7 @@ public enum CTKit {
 private extension CTKit {
     static func token() -> AnyPublisher<String, Error> {
         if let token = CTKDefaults.value(for: "token") as? String {
-            return Future<String, Error> { $0(.success(token)) }.eraseToAnyPublisher()
+            return Future<String, Error> { $0(.success(token) }.eraseToAnyPublisher()
         }
         let req: AnyPublisher<CTKToken, Error> = API.token.execute()
         return req.compactMap { $0.value }.eraseToAnyPublisher()

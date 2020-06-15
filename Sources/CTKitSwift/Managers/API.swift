@@ -64,9 +64,17 @@ enum API {
             .tryCompactMap { (data, _) -> T? in
                 let xml = SWXMLHash.parse(data)
                 if xml["errors"]["error"].element?.text == "wrong token" {
-                    throw 
+                    throw APIError.wrongToken
                 }
                 return try T(xmlObject: xml)
-            }.eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+    }
+}
+
+extension API {
+    enum APIError: Error {
+        typealias RawValue = String
+        case wrongToken
     }
 }
