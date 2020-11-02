@@ -6,15 +6,30 @@
 //
 
 import Foundation
+import Combine
 
-final class CTKDefaults {
-    private static var defaults: UserDefaults? { UserDefaults(suiteName: "com.martinpucik.CTKitSwift") }
+struct CTKDefaults {
+    
+    static let defaults: UserDefaults? = UserDefaults(suiteName: "com.martinpucik.CTKitSwift")
+    
+    @UserDefaultsBacked(key: "token")
+    static var token: String?
+}
 
-    static func set(_ value: Any?, key: String) {
-        defaults?.set(value, forKey: key)
+@propertyWrapper struct UserDefaultsBacked<Value> {
+    let key: String
+    let storage: UserDefaults? = CTKDefaults.defaults
+
+    var wrappedValue: Value? {
+        get {
+            storage?.value(forKey: key) as? Value
+        }
+        set {
+            storage?.setValue(newValue, forKey: key)
+        }
     }
-
-    static func value(for key: String) -> Any? {
-        defaults?.value(forKey: key)
+    
+    var publisherValue: AnyPublisher<Any?, Error> {
+        return Result.Publisher(wrappedValue).eraseToAnyPublisher()
     }
 }

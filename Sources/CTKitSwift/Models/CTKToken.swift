@@ -16,6 +16,6 @@ struct CTKToken: XMLDecodable {
             throw XMLDecodableError.xmlDecodingFailed
         }
         value = token
-        CTKDefaults.set(value, key: "token")
+        CTKDefaults.token = value
     }
 }

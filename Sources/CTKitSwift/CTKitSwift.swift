@@ -10,7 +10,7 @@ import Combine
 
 public enum CTKit {
     static func programmes() -> AnyPublisher<[CTKProgramme], Error> {
-        let ddd = token().flatMap {
+        let ddd = token.flatMap {
             API.programmelist(token: $0).execute() as AnyPublisher<[CTKProgramme], Error>
         }.eraseToAnyPublisher()
 
@@ -19,11 +19,9 @@ public enum CTKit {
 }
 
 private extension CTKit {
-    static func token() -> AnyPublisher<String, Error> {
-        if let token = CTKDefaults.value(for: "token") as? String {
-            return Result.Publisher(token).eraseToAnyPublisher()
-        }
-        let req: AnyPublisher<CTKToken, Error> = API.token.execute()
-        return req.compactMap { $0.value }.eraseToAnyPublisher()
+    static var token: AnyPublisher<String, Error> {
+        Just(CTKDefaults.token).setFailureType(to: Error.self).replaceNil(with: "").eraseToAnyPublisher()
+//        let req: AnyPublisher<CTKToken, Error> = API.token.execute()
+//        return req.compactMap { $0.value }.eraseToAnyPublisher()
     }
 }
