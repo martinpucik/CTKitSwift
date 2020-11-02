@@ -59,6 +59,10 @@ enum API {
 
     // MARK: - Public methods
 
+    func request(resource: ResourceProviding) -> URLSession.DataTaskPublisher {
+        URLSession.shared.dataTaskPublisher(for: resource.request)
+    }
+    
     public func execute<T: XMLDecodable>() -> AnyPublisher<T, Error> {
         return URLSession.shared.dataTaskPublisher(for: request)
             .tryCompactMap { (data, _) -> T? in

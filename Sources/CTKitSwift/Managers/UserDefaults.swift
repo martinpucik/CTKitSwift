@@ -6,30 +6,28 @@
 //
 
 import Foundation
-import Combine
+
+@propertyWrapper struct UserDefaultsBacked<Value> {
+    private let key: String
+    private let storage: UserDefaults?
+
+    init(key: String, storage: UserDefaults? = CTKDefaults.defaults) {
+        self.key = key
+        self.storage = storage
+    }
+    
+    var wrappedValue: Value? {
+        get { storage?.value(forKey: key) as? Value }
+        set { storage?.setValue(newValue, forKey: key) }
+    }
+}
 
 struct CTKDefaults {
     
-    static let defaults: UserDefaults? = UserDefaults(suiteName: "com.martinpucik.CTKitSwift")
+    fileprivate static let defaults: UserDefaults? = UserDefaults(suiteName: "com.martinpucik.CTKitSwift")
     
     @UserDefaultsBacked(key: "token")
     static var token: String?
 }
 
-@propertyWrapper struct UserDefaultsBacked<Value> {
-    let key: String
-    let storage: UserDefaults? = CTKDefaults.defaults
 
-    var wrappedValue: Value? {
-        get {
-            storage?.value(forKey: key) as? Value
-        }
-        set {
-            storage?.setValue(newValue, forKey: key)
-        }
-    }
-    
-    var publisherValue: AnyPublisher<Any?, Error> {
-        return Result.Publisher(wrappedValue).eraseToAnyPublisher()
-    }
-}
