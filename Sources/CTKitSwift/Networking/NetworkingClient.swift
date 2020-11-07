@@ -44,7 +44,9 @@ enum NetworkingClient {
     // MARK: - Public methods
 
     static func request<T: ResourceProviding>(resource: T) -> AnyPublisher<T.ResponseType, Error> {
-        return URLSession.shared.dataTaskPublisher(for: makeRequest(resource: resource))
+        let request = makeRequest(resource: resource)
+        
+        return URLSession.shared.dataTaskPublisher(for: request)
             .mapError { CTKError.urlError($0) }
             .tryCompactMap { try T.ResponseType(data: $0.0) }
             .eraseToAnyPublisher()

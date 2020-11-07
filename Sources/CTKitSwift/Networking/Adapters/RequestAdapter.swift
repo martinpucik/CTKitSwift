@@ -8,5 +8,5 @@
 import Foundation
 
 protocol RequestAdapting {
-    
+    func adapt(_ urlRequest: URLRequest, completion: @escaping (Result<URLRequest, Error>) -> Void)
 }

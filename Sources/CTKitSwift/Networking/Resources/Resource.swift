@@ -21,12 +21,14 @@ protocol ResourceProviding {
     var path: String { get }
     var body: [String: String]? { get }
     var headers: [String: String]? { get }
+    var adapters: [RequestAdapting] { get }
 }
 
 extension ResourceProviding {
     var method: HttpMethod { .GET }
     var body: [String: String]? { nil }
     var headers: [String: String]? { nil }
+    var adapters: [RequestAdapting] { [RequestAdapting]() }
 }
 
 
