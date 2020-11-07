@@ -13,7 +13,7 @@ let package = Package(
         .library(name: "CTKitSwift", targets: ["CTKitSwift"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/martinpucik/SWXMLHash", .branch("patch-1"))
+        .package(url: "https://github.com/drmohundro/SWXMLHash", .branch("main"))
     ],
     targets: [
         .target(name: "CTKitSwift", dependencies: ["SWXMLHash"]),

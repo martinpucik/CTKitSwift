@@ -10,11 +10,12 @@ import Combine
 
 public enum CTKit {
     static func programmes() -> AnyPublisher<[CTKProgramme], Error> {
-        let ddd = token.flatMap {
-            API.programmelist(token: $0).execute() as AnyPublisher<[CTKProgramme], Error>
-        }.eraseToAnyPublisher()
-
-        return ddd
+        return Just([]).setFailureType(to: Error.self).eraseToAnyPublisher()
+//        let ddd = token.flatMap {
+//            API.programmelist(token: $0).execute() as AnyPublisher<[CTKProgramme], Error>
+//        }.eraseToAnyPublisher()
+//
+//        return ddd
     }
 }
 

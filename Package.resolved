@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "SWXMLHash",
-        "repositoryURL": "https://github.com/martinpucik/SWXMLHash",
+        "repositoryURL": "https://github.com/drmohundro/SWXMLHash",
         "state": {
-          "branch": "patch-1",
-          "revision": "e7869235ac2e4a24a35ffd05f20a5a9e652b1bdf",
+          "branch": "main",
+          "revision": "684cd492bfee23b8fd4a5826bbbea5796c76a401",
           "version": null
         }
       }

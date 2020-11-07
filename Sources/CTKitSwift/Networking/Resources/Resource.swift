@@ -1,13 +1,40 @@
 //
-//  File.swift
-//  
+//  Resource.swift
+//  CTKitSwift
 //
 //  Created by Martin Pucik on 02.11.2020.
 //
 
 import Foundation
 
+enum HttpMethod: String {
+    case GET
+    case PUT
+    case POST
+    case DELETE
+    case HEAD
+}
+
 protocol ResourceProviding {
-    
-    var request: URLRequest { get }
+    associatedtype ResponseType: ResponseProviding
+    var method: HttpMethod { get }
+    var path: String { get }
+    var body: [String: String]? { get }
+    var headers: [String: String]? { get }
+}
+
+extension ResourceProviding {
+    var method: HttpMethod { .GET }
+    var body: [String: String]? { nil }
+    var headers: [String: String]? { nil }
+}
+
+
+enum Resource {
+    struct Token: ResourceProviding {
+        let method: HttpMethod = .POST
+        let path: String = "/services/ivysilani/xml/token/"
+        let body: [String: String]? = ["user": "iDevicesMotion"]
+        typealias ResponseType = Response.TokenResponse
+    }
 }
