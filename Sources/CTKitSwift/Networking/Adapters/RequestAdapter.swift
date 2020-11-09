@@ -6,7 +6,8 @@
 //
 
 import Foundation
+import Combine
 
 protocol RequestAdapting {
-    func adapt(_ urlRequest: URLRequest, completion: @escaping (Result<URLRequest, Error>) -> Void)
+    func adapt(_ urlRequest: URLRequest) -> Future<URLRequest, Never>
 }

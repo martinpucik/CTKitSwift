@@ -22,31 +22,12 @@ enum NetworkingClient {
         "User-Agent": "Dalvik/1.6.0 (Linux; U; Android 4.4.4; Nexus 7 Build/KTU84P)"
     ]
 
-//    private var path: String {
-//        switch self {
-//            case .programmelist: return "/services/ivysilani/xml/programmelist/"
-//        }
-//    }
-//
-//    private var method: String {
-//        switch self {
-//            case .token, .programmelist: return "POST"
-//        }
-//    }
-//
-//    private var body: Data? {
-//        switch self {
-//        case .programmelist(let token): return ["token": token, "imageType": "1280", "current": "1"].percentEncoded
-//        }
-//    }
-//
-
     // MARK: - Public methods
 
     static func request<T: ResourceProviding>(resource: T) -> AnyPublisher<T.ResponseType, Error> {
         let request = makeRequest(resource: resource)
-        
-        return URLSession.shared.dataTaskPublisher(for: request)
+        return Interceptor(request: request, adapters: resource.adapters)
+            .flatMap(URLSession.shared.dataTaskPublisher(for:))
             .mapError { CTKError.urlError($0) }
             .tryCompactMap { try T.ResponseType(data: $0.0) }
             .eraseToAnyPublisher()

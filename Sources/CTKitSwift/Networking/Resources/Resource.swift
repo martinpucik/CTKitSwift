@@ -31,6 +31,7 @@ extension ResourceProviding {
     var adapters: [RequestAdapting] { [RequestAdapting]() }
 }
 
+// MARK: - Resources
 
 enum Resource {
     struct Token: ResourceProviding {
@@ -38,5 +39,13 @@ enum Resource {
         let path: String = "/services/ivysilani/xml/token/"
         let body: [String: String]? = ["user": "iDevicesMotion"]
         typealias ResponseType = Response.TokenResponse
+    }
+    
+    struct ProgrammeList: ResourceProviding {
+        let path: String = "/services/ivysilani/xml/programmelist/"
+        let body: [String: String]? = ["imageType": "1280", "current": "1"]
+        let adapters: [RequestAdapting] = [TokenRequestAdapter()]
+        typealias ResponseType = Response.TokenResponse
+
     }
 }
