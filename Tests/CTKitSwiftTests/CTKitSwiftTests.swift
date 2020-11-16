@@ -15,7 +15,7 @@ final class CTKitSwiftTests: XCTestCase {
                 break
             }
         }, receiveValue: { (tokenResponse) in
-            print(tokenResponse)
+            XCTAssertEqual(tokenResponse.token, CTKDefaults.token)
             exp.fulfill()
         }) .store(in: &bag)
 

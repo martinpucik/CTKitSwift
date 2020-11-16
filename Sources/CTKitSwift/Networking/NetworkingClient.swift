@@ -28,6 +28,10 @@ enum NetworkingClient {
         let request = makeRequest(resource: resource)
         return Interceptor(request: request, adapters: resource.adapters)
             .flatMap(URLSession.shared.dataTaskPublisher(for:))
+            .map { output -> (Publishers.FlatMap<URLSession.DataTaskPublisher, Interceptor>.Output) in
+                resource.adapters.forEach { $0.onResponse(output.response, data: output.data) }
+                return output
+            }
             .mapError { CTKError.urlError($0) }
             .tryCompactMap { try T.ResponseType(data: $0.0) }
             .eraseToAnyPublisher()

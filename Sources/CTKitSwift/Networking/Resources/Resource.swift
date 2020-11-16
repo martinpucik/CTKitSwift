@@ -38,6 +38,7 @@ enum Resource {
         let method: HttpMethod = .POST
         let path: String = "/services/ivysilani/xml/token/"
         let body: [String: String]? = ["user": "iDevicesMotion"]
+        let adapters: [RequestAdapting] = [TokenResponseRequestAdapter()]
         typealias ResponseType = Response.TokenResponse
     }
     
