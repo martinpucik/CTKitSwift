@@ -49,8 +49,8 @@ final class InterceptorSubscription<S: Subscriber>: Subscription where S.Input =
     private func adaptRequest() {
         if let adapter = adapters.first {
             adapter.adapt(request).sink(receiveValue: { [weak self] newRequest in
-                self?.adapters.removeFirst()
                 self?.request = newRequest
+                self?.adapters.removeFirst()
                 self?.adaptRequest()
             }).store(in: &cancelBag)
         } else {

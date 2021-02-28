@@ -10,19 +10,15 @@ import Combine
 
 public enum CTKit {
     static func programmes() -> AnyPublisher<[CTKProgramme], Error> {
-        return Just([]).setFailureType(to: Error.self).eraseToAnyPublisher()
-//        let ddd = token.flatMap {
-//            API.programmelist(token: $0).execute() as AnyPublisher<[CTKProgramme], Error>
-//        }.eraseToAnyPublisher()
-//
-//        return ddd
+        return NetworkingClient.request(resource: Resource.ProgrammeList()).map { $0.programmes }.eraseToAnyPublisher()
     }
 }
 
-private extension CTKit {
+extension CTKit {
     static var token: AnyPublisher<String, Error> {
-        Just(CTKDefaults.token).setFailureType(to: Error.self).replaceNil(with: "").eraseToAnyPublisher()
-//        let req: AnyPublisher<CTKToken, Error> = API.token.execute()
-//        return req.compactMap { $0.value }.eraseToAnyPublisher()
+        if let token = CTKDefaults.token {
+            return Just(token).setFailureType(to: Error.self).eraseToAnyPublisher()
+        }
+        return NetworkingClient.request(resource: Resource.Token()).map { $0.token }.eraseToAnyPublisher()
     }
 }

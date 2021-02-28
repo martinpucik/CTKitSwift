@@ -25,4 +25,14 @@ enum Response {
             self.token = token
         }
     }
+
+    struct ProgrammeListResponse: ResponseProviding {
+        let programmes: [CTKProgramme]
+
+        init(data: Data) throws {
+            let xml = SWXMLHash.parse(data)
+            let programmes = xml["programmes"].children.compactMap { CTKProgramme(xmlObject: $0) }
+            self.programmes = programmes
+        }
+    }
 }

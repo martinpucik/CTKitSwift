@@ -29,5 +29,3 @@ struct CTKDefaults {
     @UserDefaultsBacked(key: "token")
     static var token: String?
 }
-
-

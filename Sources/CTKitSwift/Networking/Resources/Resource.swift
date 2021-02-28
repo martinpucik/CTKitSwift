@@ -43,10 +43,10 @@ enum Resource {
     }
     
     struct ProgrammeList: ResourceProviding {
+        let method: HttpMethod = .POST
         let path: String = "/services/ivysilani/xml/programmelist/"
         let body: [String: String]? = ["imageType": "1280", "current": "1"]
         let adapters: [RequestAdapting] = [TokenRequestAdapter()]
-        typealias ResponseType = Response.TokenResponse
-
+        typealias ResponseType = Response.ProgrammeListResponse
     }
 }

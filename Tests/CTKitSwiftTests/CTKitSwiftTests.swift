@@ -26,9 +26,8 @@ final class CTKitSwiftTests: XCTestCase {
     func testGetProgrammes() {
         var bag = Set<AnyCancellable>()
         let exp = expectation(description: "programmes")
-        let req = NetworkingClient.request(resource: Resource.ProgrammeList())
+        let req = CTKit.programmes()
         req.sink(receiveCompletion: { _ in }, receiveValue: { (prog) in
-            print(prog)
             exp.fulfill()
         }).store(in: &bag)
 
