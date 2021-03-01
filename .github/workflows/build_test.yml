@@ -7,10 +7,9 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  test:
     runs-on: macos-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Run tests
-      run: set -o pipefail && xcodebuild -quiet -scheme CTKitSwift test -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11' -enableCodeCoverage NO
+      run: set -o pipefail && xcodebuild -quiet -scheme CTKitSwift test -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11' -enableCodeCoverage YES
