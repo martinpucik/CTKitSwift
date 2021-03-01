@@ -34,6 +34,13 @@ enum NetworkingClient {
             }
             .mapError { CTKError.urlError($0) }
             .tryCompactMap { try T.ResponseType(data: $0.0) }
+            .catch { error -> AnyPublisher<T.ResponseType, Error>in
+                if let error = error as? CTKError, error == CTKError.tokenExpired {
+                    CTKDefaults.token = nil
+                    return Self.request(resource: resource)
+                }
+                return Fail(error: error).eraseToAnyPublisher()
+            }
             .eraseToAnyPublisher()
     }
 }

@@ -34,4 +34,19 @@ final class CTKitSwiftTests: XCTestCase {
         let result = XCTWaiter().wait(for: [exp], timeout: 5)
         XCTAssertEqual(result, .completed)
     }
+
+    func testGetProgrammePlaylist() {
+        var bag = Set<AnyCancellable>()
+        let exp = expectation(description: "programme playlist")
+        let req = CTKit.programmes().flatMap { programmes -> AnyPublisher<Response.ProgrammePlaylistPlayURLResponse, Error> in
+            let first = programmes.first!
+            return CTKit.playlist(for: first)
+        }
+        req.sink(receiveCompletion: { _ in }, receiveValue: { (prog) in
+            exp.fulfill()
+        }).store(in: &bag)
+
+        let result = XCTWaiter().wait(for: [exp], timeout: 5)
+        XCTAssertEqual(result, .completed)
+    }
 }

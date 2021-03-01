@@ -12,6 +12,14 @@ public enum CTKit {
     static func programmes() -> AnyPublisher<[CTKProgramme], Error> {
         return NetworkingClient.request(resource: Resource.ProgrammeList()).map { $0.programmes }.eraseToAnyPublisher()
     }
+
+    static func playlist(for programme: CTKProgramme) -> AnyPublisher<Response.ProgrammePlaylistPlayURLResponse, Error> {
+        return NetworkingClient.request(resource: Resource.ProgrammePlaylist(programme: programme))
+            .flatMap { response in
+                return NetworkingClient.request(resource: Resource.ProgrammePlaylistPlayURL(playlistResponse: response))
+            }
+            .eraseToAnyPublisher()
+    }
 }
 
 extension CTKit {

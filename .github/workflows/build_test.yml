@@ -12,7 +12,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build
-      run: swift build -v
     - name: Run tests
-      run: swift test -v
+      run: set -o pipefail && xcodebuild -quiet -scheme CTKitSwift test -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11' -enableCodeCoverage NO

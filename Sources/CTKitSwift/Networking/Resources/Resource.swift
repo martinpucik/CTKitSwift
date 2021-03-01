@@ -49,4 +49,39 @@ enum Resource {
         let adapters: [RequestAdapting] = [TokenRequestAdapter()]
         typealias ResponseType = Response.ProgrammeListResponse
     }
+
+    struct ProgrammePlaylist: ResourceProviding {
+        let method: HttpMethod = .POST
+        let path: String = "/services/ivysilani/xml/playlisturl/"
+        let body: [String: String]?// = ["imageType": "1280", "current": "1"]
+        let adapters: [RequestAdapting] = [TokenRequestAdapter()]
+        typealias ResponseType = Response.ProgrammePlaylistResponse
+
+        init(programme: CTKProgramme) {
+            let quality: String = programme.isVOD ? "max720p" : "web"
+            let playerType: String = programme.isVOD ? "progressive" : "ios"
+            let params = [
+                "ID": programme.id,
+                "quality": quality,
+                "playerType": playerType,
+            ]
+            self.body = params
+        }
+    }
+
+    struct ProgrammePlaylistPlayURL: ResourceProviding {
+        let method: HttpMethod = .GET
+        let path: String
+        let body: [String: String]? = nil
+        let adapters: [RequestAdapting] = []
+        typealias ResponseType = Response.ProgrammePlaylistPlayURLResponse
+
+        init(playlistResponse: Response.ProgrammePlaylistResponse) {
+            guard let components = URLComponents(string: playlistResponse.playlistURLString) else {
+                self.path = playlistResponse.playlistURLString
+                return
+            }
+            self.path = "\(components.path)?\(components.query ?? "")" 
+        }
+    }
 }

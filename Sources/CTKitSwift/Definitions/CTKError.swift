@@ -7,7 +7,9 @@
 
 import Foundation
 
-public enum CTKError: Error {
+public enum CTKError: Error, Equatable {
     case urlError(URLError)
+    case tokenExpired
     case invalidTokenResponse
+    case invalidPlaylistResponse
 }
