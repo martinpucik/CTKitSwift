@@ -38,7 +38,7 @@ final class CTKitSwiftTests: XCTestCase {
     func testGetProgrammePlaylist() {
         var bag = Set<AnyCancellable>()
         let exp = expectation(description: "programme playlist")
-        let req = CTKit.programmes().flatMap { programmes -> AnyPublisher<Response.ProgrammePlaylistPlayURLResponse, Error> in
+        let req = CTKit.programmes().flatMap { programmes -> AnyPublisher<String, Error> in
             let first = programmes.first!
             return CTKit.playlist(for: first)
         }

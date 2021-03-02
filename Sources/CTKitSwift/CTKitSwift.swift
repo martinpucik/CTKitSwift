@@ -9,15 +9,16 @@ import Foundation
 import Combine
 
 public enum CTKit {
-    static func programmes() -> AnyPublisher<[CTKProgramme], Error> {
+    public static func programmes() -> AnyPublisher<[CTKProgramme], Error> {
         return NetworkingClient.request(resource: Resource.ProgrammeList()).map { $0.programmes }.eraseToAnyPublisher()
     }
 
-    static func playlist(for programme: CTKProgramme) -> AnyPublisher<Response.ProgrammePlaylistPlayURLResponse, Error> {
+    public static func playlist(for programme: CTKProgramme) -> AnyPublisher<String, Error> {
         return NetworkingClient.request(resource: Resource.ProgrammePlaylist(programme: programme))
             .flatMap { response in
                 return NetworkingClient.request(resource: Resource.ProgrammePlaylistPlayURL(playlistResponse: response))
             }
+            .map { $0.playURLString }
             .eraseToAnyPublisher()
     }
 }
