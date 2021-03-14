@@ -40,7 +40,7 @@ final class CTKitSwiftTests: XCTestCase {
         let exp = expectation(description: "programme playlist")
         let req = CTKit.programmes().flatMap { programmes -> AnyPublisher<String, Error> in
             let first = programmes.first!
-            return CTKit.playlist(programmeID: first.id)
+            return CTKit.playlist(programmeID: first.id, isVOD: first.isVOD)
         }
         req.sink(receiveCompletion: { _ in }, receiveValue: { (prog) in
             exp.fulfill()
