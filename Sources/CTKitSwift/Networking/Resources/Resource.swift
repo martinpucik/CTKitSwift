@@ -57,11 +57,11 @@ enum Resource {
         let adapters: [RequestAdapting] = [TokenRequestAdapter()]
         typealias ResponseType = Response.ProgrammePlaylistResponse
 
-        init(programme: CTKProgramme) {
-            let quality: String = programme.isVOD ? "max720p" : "web"
-            let playerType: String = programme.isVOD ? "progressive" : "ios"
+        init(programmeID: String, isVOD: Bool) {
+            let quality: String = isVOD ? "max720p" : "web"
+            let playerType: String = isVOD ? "progressive" : "ios"
             let params = [
-                "ID": programme.id,
+                "ID": programmeID,
                 "quality": quality,
                 "playerType": playerType,
             ]

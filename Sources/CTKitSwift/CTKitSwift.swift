@@ -13,8 +13,8 @@ public enum CTKit {
         return NetworkingClient.request(resource: Resource.ProgrammeList()).map { $0.programmes }.eraseToAnyPublisher()
     }
 
-    public static func playlist(for programme: CTKProgramme) -> AnyPublisher<String, Error> {
-        return NetworkingClient.request(resource: Resource.ProgrammePlaylist(programme: programme))
+    public static func playlist(programmeID: String) -> AnyPublisher<String, Error> {
+        return NetworkingClient.request(resource: Resource.ProgrammePlaylist(programmeID: programmeID, isVOD: true))
             .flatMap { response in
                 return NetworkingClient.request(resource: Resource.ProgrammePlaylistPlayURL(playlistResponse: response))
             }
