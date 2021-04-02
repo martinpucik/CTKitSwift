@@ -18,6 +18,7 @@ public struct CTKProgramme {
     public let previewImageURLString: String
     public let isVOD: Bool
     public let startTime: Date?
+    public let endTime: Date?
     public let synopsis: String?
     public let elapsedPercentage: String?
 
@@ -46,6 +47,13 @@ public struct CTKProgramme {
             self.startTime = Date(timeIntervalSince1970: unixTimeInterval)
         } else {
             self.startTime = nil
+        }
+
+        if let unix = xmlObject["next"]["programme"]["unixTime"].element?.text {
+            let unixTimeInterval = Double(unix) ?? 0
+            self.endTime = Date(timeIntervalSince1970: unixTimeInterval)
+        } else {
+            self.endTime = nil
         }
     }
 }
